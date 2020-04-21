@@ -52,46 +52,6 @@ public class TM
     }
     
     public boolean transition(char symbol){
-        /*
-        if (state.equals("Q1") && symbol == '1'){
-            state = "Q3"; write_symbol('x'); move_right(); return true;
-        }else if (state.equals("Q3") && (symbol == '0' || symbol == '1')){
-            state = "Q3"; move_right(); return true;
-        }else if (state.equals("Q3") && (symbol == '#')){
-            state = "Q5"; move_right(); return true;
-        }else if (state.equals("Q5") && (symbol == 'x')){
-            state = "Q5"; move_right(); return true;
-        }else if (state.equals("Q5") && (symbol == '1')){
-            state = "Q6"; write_symbol('x'); move_left(); return true;
-        }else if (state.equals("Q6") && (symbol == '0' || symbol == '1' || symbol == 'x')){
-            state = "Q6"; write_symbol('x'); move_left(); return true;
-        }else if (state.equals("Q6") && (symbol == '#')){
-            state = "Q7"; move_left(); return true;
-        }else if (state.equals("Q7") && (symbol == '0' || symbol == '1')){
-            state = "Q7"; move_left(); return true;
-        }else if (state.equals("Q7") && (symbol == 'x')){
-            state = "Q1"; move_right(); return true;
-        }else if (state.equals("Q1") && (symbol == '0')){
-            state = "Q2"; write_symbol('x'); move_right(); return true;
-        }else if (state.equals("Q2") && (symbol == '0' || symbol == '1')){
-            state = "Q2"; move_right(); return true;
-        }else if (state.equals("Q2") && (symbol == '#')){
-            state = "Q4"; move_right(); return true;
-        }else if (state.equals("Q4") && (symbol == 'x')){
-            state = "Q4"; move_right(); return true;
-        }else if (state.equals("Q4") && (symbol == '0')){
-            state = "Q6"; write_symbol('x'); move_left(); return true;
-        }else if (state.equals("Q1") && (symbol == '#')){
-            state = "Q8"; move_right(); return true;
-        }else if (state.equals("Q8") && (symbol == 'x')){
-            state = "Q8"; move_right(); return true;
-        }else if (state.equals("Q8") && (symbol == '%')){
-            state = "Q9"; return true;
-        }
-        else{
-            return false;
-        }
-        */
 
         
         if (state.equals("Q0") && (symbol == '1' || symbol == '0') ){ // copy input section
