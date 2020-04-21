@@ -181,12 +181,94 @@ public class TM
         else if (state.equals("Q12") && (symbol == '%') ){
             state = "Q13"; move_right(); return true;
         }
-
+        else if (state.equals("Q13") && (symbol == '1' || symbol == '0' || symbol == '@' || symbol == '$') ){ // start of cleaing input
+            state = "Q13"; move_left(); return true;
+        }
+        else if (state.equals("Q13") && (symbol == '%') ){
+            state = "Q14"; move_right(); return true;
+        }
+        else if (state.equals("Q14") && (symbol == '1' || symbol == '0' || symbol == '$') ){
+            state = "Q14"; move_right(); return true;
+        }
+        else if (state.equals("Q14") && (symbol == '@') ){
+            state = "Q15"; move_right(); return true;
+        }
+        else if (state.equals("Q15") && (symbol == '1') ){
+            state = "Q16"; write_symbol('*'); move_left(); return true;
+        }
+        else if (state.equals("Q15") && (symbol == '0') ){
+            state = "Q17";write_symbol('#'); move_left(); return true;
+        }
+        else if (state.equals("Q15") && (symbol == '%') ){
+            state = "Q23"; move_left(); return true;
+        }
+        else if (state.equals("Q16") && (symbol == '1' || symbol == '0' ) ){
+            state = "Q16"; move_left(); return true;
+        }
+        else if (state.equals("Q16") && (symbol == '@') ){
+            state = "Q18"; move_left(); return true;
+        }
+        else if (state.equals("Q17") && (symbol == '1' || symbol == '0') ){
+            state = "Q17"; move_left(); return true;
+        }
+        else if (state.equals("Q17") && (symbol == '@') ){
+            state = "Q19"; move_left(); return true;
+        }
+        else if (state.equals("Q18") && (symbol == '$') ){
+            state = "Q18"; move_left(); return true;
+        }
+        else if (state.equals("Q18") && (symbol == '1' || symbol == '0' || symbol == '%') ){
+            state = "Q20"; move_right(); return true;
+        }
+        else if (state.equals("Q19") && (symbol == '$') ){
+            state = "Q19"; move_left(); return true;
+        }
+        else if (state.equals("Q19") && (symbol == '1' || symbol == '0' || symbol == '%') ){
+            state = "Q21"; move_right(); return true;
+        }
+        else if (state.equals("Q20") && (symbol == '$') ){
+            state = "Q22";write_symbol('1'); move_right(); return true;
+        }
+        else if (state.equals("Q21") && (symbol == '$') ){
+            state = "Q22";write_symbol('0'); move_right(); return true;
+        }
+        else if (state.equals("Q22") && (symbol == '1' || symbol == '0' || symbol == '$' || symbol == '@') ){
+            state = "Q22"; move_right(); return true;
+        }
+        else if (state.equals("Q22") && (symbol == '*') ){
+            state = "Q15"; write_symbol('1'); move_right(); return true;
+        }
+        else if (state.equals("Q22") && (symbol == '#') ){
+            state = "Q15"; write_symbol('0'); move_right(); return true;
+        }
+        else if (state.equals("Q23") && (symbol == '1' || symbol == '0' || symbol == '@' ) ){
+            state = "Q23"; move_left(); return true;
+        }
+        else if (state.equals("Q23") && (symbol == '%') ){
+            state = "Q24"; move_right(); return true;
+        }
+        /*
+        else if (state.equals("Q24") && (symbol == '1' ) ){
+            state = "Q25"; write_symbol('$'); move_right(); return true;
+        }
+        else if (state.equals("Q24") && (symbol == '0') ){
+            state = "Q27";write_symbol('$'); move_right(); return true;
+        }
+        else if (state.equals("Q24") && (symbol == '$' ) ){
+            state = "Q33"; move_left(); return true;
+        }
+        else if (state.equals("Q25") && (symbol == '$' ) ){
+            state = "Q26"; move_right(); return true;
+        }
+        else if (state.equals("Q25") && (symbol == '1' || symbol == '0' ) ){
+            state = "Q28"; move_right(); return true;
+        }
+        */
         return false;
 
     }
     public void run(){
-        while(!state.equals("Q13")){
+        while(!state.equals("Q24")){
           System.out.println(toString());//Print the current configuration
           if(false == transition(tape[head])){
               System.out.println("Input rejected:\n" + toString()); System.exit(0);
