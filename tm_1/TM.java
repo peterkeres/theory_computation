@@ -16,16 +16,16 @@ public class TM
     //Initialize the Machine
     //Place the input on the tape. No more than 255 symbols
     public TM(char[] input){
-        state = "Q1";
+        state = "Q0";
         
         //the tape is initially all blank symbols
         tape = new char[256];//Assume up to 255 char. Normally infinite
         for(int i = 0; i < tape.length; i++) tape[i] = '%';
         
         this.input = input;
-        for(int i = 0; i < input.length; i++) tape[i] = input[i];
+        for(int i = 0; i < input.length; i++) tape[i+1] = input[i];
         
-        head = 0;//The Read/Write head is at index 0
+        head = 1;//The Read/Write head is at index 0
     }
     
     public void move_left(){
@@ -43,15 +43,16 @@ public class TM
     }
     
     public String toString(){
-        String s = ""; //"State = " + state + " Current Symbol = " + tape[head] + "\n Tape = ";
+        String s = "State = " + state + " Current Symbol = " + tape[head] + "\n Tape = "; //"State = " + state + " Current Symbol = " + tape[head] + "\n Tape = ";
         for(int i = 0; i < tape.length; i++){ 
            s += tape[i] + " ";
-           if(tape[i] == '%') break;
+           if(tape[i] == '%' && i != 0) break;
         }
         return s + "\n";
     }
     
     public boolean transition(char symbol){
+        /*
         if (state.equals("Q1") && symbol == '1'){
             state = "Q3"; write_symbol('x'); move_right(); return true;
         }else if (state.equals("Q3") && (symbol == '0' || symbol == '1')){
@@ -90,10 +91,102 @@ public class TM
         else{
             return false;
         }
+        */
+
         
+        if (state.equals("Q0") && (symbol == '1' || symbol == '0') ){ // copy input section
+            state = "Q0"; move_right(); return true;
+        }
+        else if (state.equals("Q0") && (symbol == '%')){
+            state = "Q1"; write_symbol('@'); move_left(); return true;
+        }
+        else if (state.equals("Q1") && (symbol == '1' || symbol == '0') ){
+            state = "Q1"; move_left(); return true;
+        }
+        else if (state.equals("Q1") && (symbol == '%')){
+            state = "Q2"; move_right(); return true;
+        }
+        else if (state.equals("Q2") && (symbol == '0')){
+            state = "Q3"; write_symbol('#'); move_right(); return true;
+        }
+        else if (state.equals("Q2") && (symbol == '1')){
+            state = "Q4";write_symbol('*'); move_right(); return true;
+        }
+        else if (state.equals("Q2") && (symbol == '@')){
+            state = "Q6"; move_left(); return true;
+        }
+        else if (state.equals("Q3") && (symbol == '1' || symbol == '0' || symbol == '@') ){
+            state = "Q3"; move_right(); return true;
+        }
+        else if (state.equals("Q3") && (symbol == '%')){
+            state = "Q5"; write_symbol('0'); move_left(); return true;
+        }
+        else if (state.equals("Q4") && (symbol == '1' || symbol == '0' || symbol == '@')){
+            state = "Q4"; move_right(); return true;
+        }
+        else if (state.equals("Q4") && (symbol == '%')){
+            state = "Q5"; write_symbol('1'); move_left(); return true;
+        }
+        else if (state.equals("Q5") && (symbol == '1' || symbol == '0' || symbol == '@') ){
+            state = "Q5"; move_left(); return true;
+        }
+        else if (state.equals("Q5") && (symbol == '#')){
+            state = "Q2";write_symbol('0'); move_right(); return true;
+        }
+        else if (state.equals("Q5") && (symbol == '*')){
+            state = "Q2";write_symbol('1'); move_right(); return true;
+        }
+        else if (state.equals("Q6") && (symbol == '1' || symbol == '0')){
+            state = "Q6"; move_left(); return true;
+        }
+        else if (state.equals("Q6") && (symbol == '%')){
+            state = "Q7"; move_right(); return true;
+        }
+        else if (state.equals("Q7") && (symbol == '1' ) ){              // same 0 and 1 section
+            state = "Q8";write_symbol('$'); move_right(); return true;
+        }
+        else if (state.equals("Q7") && (symbol == '0' ) ){
+            state = "Q9";write_symbol('$'); move_right(); return true;
+        }
+        else if (state.equals("Q7") && (symbol == '@') ){
+            state = "Q12"; move_left(); return true;
+        }
+        else if (state.equals("Q8") && (symbol == '1' || symbol == '$') ){
+            state = "Q8"; move_right(); return true;
+        }
+        else if (state.equals("Q8") && (symbol == '0') ){
+            state = "Q10";write_symbol('$'); move_left(); return true;
+        }
+        else if (state.equals("Q9") && (symbol == '0' || symbol == '$') ){
+            state = "Q9"; move_right(); return true;
+        }
+        else if (state.equals("Q9") && (symbol == '1' ) ){
+            state = "Q10";write_symbol('$'); move_left(); return true;
+        }
+        else if (state.equals("Q10") && (symbol == '1' || symbol == '0' || symbol == '$') ){
+            state = "Q10"; move_left(); return true;
+        }
+        else if (state.equals("Q10") && (symbol == '%') ){
+            state = "Q11"; move_right(); return true;
+        }
+        else if (state.equals("Q11") && (symbol == '$') ){
+            state = "Q11"; move_right(); return true;
+        }
+        else if (state.equals("Q11") && (symbol == '1' || symbol == '0' || symbol == '@') ){
+            state = "Q7"; return true;
+        }
+        else if (state.equals("Q12") && (symbol == '$') ){
+            state = "Q12"; move_left(); return true;
+        }
+        else if (state.equals("Q12") && (symbol == '%') ){
+            state = "Q13"; move_right(); return true;
+        }
+
+        return false;
+
     }
     public void run(){
-        while(!state.equals("Q9")){
+        while(!state.equals("Q13")){
           System.out.println(toString());//Print the current configuration
           if(false == transition(tape[head])){
               System.out.println("Input rejected:\n" + toString()); System.exit(0);
