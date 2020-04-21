@@ -247,8 +247,7 @@ public class TM
         else if (state.equals("Q23") && (symbol == '%') ){
             state = "Q24"; move_right(); return true;
         }
-        /*
-        else if (state.equals("Q24") && (symbol == '1' ) ){
+        else if (state.equals("Q24") && (symbol == '1' ) ){ // start of check for pall
             state = "Q25"; write_symbol('$'); move_right(); return true;
         }
         else if (state.equals("Q24") && (symbol == '0') ){
@@ -263,12 +262,48 @@ public class TM
         else if (state.equals("Q25") && (symbol == '1' || symbol == '0' ) ){
             state = "Q28"; move_right(); return true;
         }
-        */
+        else if (state.equals("Q26") ){
+            state = "Q26"; return true;
+        }
+        else if (state.equals("Q27") && (symbol == '$') ){
+            state = "Q26"; move_right(); return true;
+        }
+        else if (state.equals("Q27") && (symbol == '1' || symbol == '0' ) ){
+            state = "Q29"; move_right(); return true;
+        }
+        else if (state.equals("Q28") && (symbol == '1' || symbol == '0' ) ){
+            state = "Q28"; move_right(); return true;
+        }
+        else if (state.equals("Q28") && (symbol == '$' || symbol == '@') ){
+            state = "Q30"; move_left(); return true;
+        }
+        else if (state.equals("Q29") && (symbol == '1' || symbol == '0' ) ){
+            state = "Q29"; move_right(); return true;
+        }
+        else if (state.equals("Q29") && (symbol == '$' || symbol == '@') ){
+            state = "Q32"; move_left(); return true;
+        }
+        else if (state.equals("Q30") && (symbol == '1') ){
+            state = "Q31";write_symbol('$'); move_left(); return true;
+        }
+        else if (state.equals("Q31") && (symbol == '1' || symbol == '0' ) ){
+            state = "Q31"; move_left(); return true;
+        }
+        else if (state.equals("Q31") && (symbol == '$' ) ){
+            state = "Q24"; move_right(); return true;
+        }
+        else if (state.equals("Q32") && (symbol == '0' ) ){
+            state = "Q31";write_symbol('$'); move_left(); return true;
+        }
+        else if (state.equals("Q33") ){
+            state = "Q33"; return true;
+        }
+
         return false;
 
     }
     public void run(){
-        while(!state.equals("Q24")){
+        while(!state.equals("Q26") && !state.equals("Q33")){
           System.out.println(toString());//Print the current configuration
           if(false == transition(tape[head])){
               System.out.println("Input rejected:\n" + toString()); System.exit(0);
